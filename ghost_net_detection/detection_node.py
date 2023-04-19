@@ -121,9 +121,9 @@ def find_lines(img):
             image=edge_img,
             rho=1,
             theta=pi/180,
-            threshold=150,
+            threshold=60,
             lines=None,
-            minLineLength=30,
+            minLineLength=20,
             maxLineGap=3
     )
 
