@@ -20,7 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'detection_node=ghost_net_detection.detection_node:main'
+            'detection_node=ghost_net_detection.detection_node:main',
+            'train_svm=ghost_net_detection.svm_model:train_and_save_model',
+            'create_synthetic_training_data=ghost_net_detection.synthetic_histogram_data:create_synthetic_histogram_data',
         ],
     },
 )

@@ -8,11 +8,17 @@ from std_msgs.msg import Empty
 from sensor_msgs.msg import Image
 import cv2
 from cv_bridge import CvBridge
+from ghost_net_detection.svm_model import load_svm_model
+
+
+NUM_BINS = 8
 
 
 class DetectionNode(Node):
     def __init__(self):
         super().__init__('detection_node')
+
+        self.model = load_svm_model('model.pkl')
 
         self.bridge = CvBridge()
 
@@ -32,10 +38,11 @@ class DetectionNode(Node):
             lines = find_lines(cv_image)
             angles = line_angles(lines)
 
-            num_hist_bins = 8
-            hist, bin_edges = np.histogram(angles, bins=num_hist_bins, range=(0, pi))
+            hist, bin_edges = np.histogram(angles, bins=NUM_BINS, range=(0, pi))
 
-            self.get_logger().info(f'{hist = }')
+            is_net = self.predict_net(hist)
+
+            self.get_logger().info('Is net' if is_net else 'Is not net')
 
             # plot the histogram
             plt.clf()
@@ -53,6 +60,14 @@ class DetectionNode(Node):
             )
             plt.pause(0.001)
         self.show_image = True
+
+    def predict_net(self, hist):
+        predictions = self.model.predict([hist])
+        print(f'{predictions = }')
+        print(f'{type(predictions) = }')
+        print(f'{predictions[0] = }')
+        print(f'{type(predictions[0]) = }')
+        return float(predictions[0]) > 0.5
 
 
 def show_img(img, winname, win_row=0, win_col=0):
