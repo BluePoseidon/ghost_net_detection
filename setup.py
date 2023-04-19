@@ -24,6 +24,7 @@ setup(
             'save_image_node=ghost_net_detection.save_image_node:main',
             'train_svm=ghost_net_detection.svm_model:train_and_save_model',
             'create_synthetic_training_data=ghost_net_detection.synthetic_histogram_data:create_synthetic_histogram_data',
+            'tether_encoder_node=ghost_net_detection.tether_encoder_node:main',
         ],
     },
 )

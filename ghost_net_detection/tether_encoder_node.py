@@ -49,19 +49,19 @@ class TetherEncoderNode(Node):
                     
                     if arduino_message_s[0] == 's':
                         s_cnt = int(arduino_message_s[1:])		
-                        self.get_logger().info("Cable length count is: ", s_cnt)		# This is encoder turns
+                        self.get_logger().info(f"Cable length count is: {s_cnt}")		# This is encoder turns
                         s = s_cnt*self.deg_pulse*self.deg_rad*self.radius
                         length_msg.data = s
                         self.length_publisher.publish(length_msg)
-                        self.get_logger().info("Cable length is: ", s)
+                        self.get_logger().info(f"Cable length is: {s}")
 
                     elif arduino_message_s[0] == 'a':
                         angle_cnt = int(arduino_message_s[1:])		# This is encoder turns, has to be transformed to degrees
-                        self.get_logger().info("Feed angle count is: ", angle_cnt)
+                        self.get_logger().info(f"Feed angle count is: {angle_cnt}")
                         angle = angle_cnt*self.deg_per_pulse_a
                         angle_msg.data = angle
                         self.angle_publisher.publish(angle_msg)
-                        self.get_logger().info("Feed angle is: ", angle)
+                        self.get_logger().info(f"Feed angle is: {angle}")
                     else:
                         self.get_logger().warn("Wrong received message")
         finally:
