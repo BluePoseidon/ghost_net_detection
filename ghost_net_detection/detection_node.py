@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Empty
+from std_msgs.msg import Bool
 from sensor_msgs.msg import Image
 import cv2
 from cv_bridge import CvBridge
@@ -21,6 +21,12 @@ class DetectionNode(Node):
         self.model = load_svm_model('model.pkl')
 
         self.bridge = CvBridge()
+
+        self.detection_publisher = self.create_publisher(
+            Bool,
+            '/detection/is_net',
+            10
+        )
 
         self.image_subscriber = self.create_subscription(
             Image,
@@ -42,7 +48,7 @@ class DetectionNode(Node):
 
             is_net = self.predict_net(hist)
 
-            self.get_logger().info('Is net' if is_net else 'Is not net')
+            self.detection_publisher.publish(Bool(data=is_net))
 
             # plot the histogram
             plt.clf()
@@ -63,10 +69,6 @@ class DetectionNode(Node):
 
     def predict_net(self, hist):
         predictions = self.model.predict([hist])
-        print(f'{predictions = }')
-        print(f'{type(predictions) = }')
-        print(f'{predictions[0] = }')
-        print(f'{type(predictions[0]) = }')
         return float(predictions[0]) > 0.5
 
 

@@ -13,7 +13,7 @@ class SaveImageNode(Node):
 
         self.declare_parameter('save_path', '')
         self.save_path = self.get_parameter('save_path').get_parameter_value().string_value
-        assert self.save_path is not '', 'save_path must be set as a parameter (e.g. ros2 run ghost_net_detection save_image_node --ros-args -p save_path:=images/positive)'
+        assert self.save_path != '', 'save_path must be set as a parameter (e.g. ros2 run ghost_net_detection save_image_node --ros-args -p save_path:=images/positive)'
         self.save_path = Path(self.save_path)
 
         os.makedirs(self.save_path, exist_ok=True)

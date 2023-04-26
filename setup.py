@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'detection_node=ghost_net_detection.detection_node:main',
+            'filter_node=ghost_net_detection.filter_node:main',
             'save_image_node=ghost_net_detection.save_image_node:main',
             'train_svm=ghost_net_detection.svm_model:train_and_save_model',
             'create_synthetic_training_data=ghost_net_detection.synthetic_histogram_data:create_synthetic_histogram_data',
